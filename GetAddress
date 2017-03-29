@@ -4,8 +4,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.Jsoup;
 import java.awt.event.ActionListener;
-
-
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
  class GetAddress{
 
 
@@ -16,7 +20,22 @@ import java.awt.event.ActionListener;
             String str1 ="";
             Document doc;
             for (int k = 1; k <= 7; k++) {
-                doc = Jsoup.connect("http://edds74.ru/Upload/files/Svodka_" + k + ".htm").get();
+                URL url = new URL("http://edds74.ru/Upload/files/Svodka_" + k + ".htm");
+               // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("",12));
+              //  HttpURLConnection uc = (HttpURLConnection)url.openConnection(proxy);
+                HttpURLConnection uc2=(HttpURLConnection)url.openConnection();
+               // uc.connect();
+                uc2.connect();
+
+                String line;
+                StringBuffer tmp = new StringBuffer();
+               // BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(uc2.getInputStream()));
+                while ((line = in.readLine()) != null) {
+                    tmp.append(line);
+                }
+
+                doc = Jsoup.parse(String.valueOf(tmp));
                 Elements metaElements = doc.select("p");
                 String str = String.valueOf(metaElements);
 
