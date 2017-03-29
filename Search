@@ -1,0 +1,12 @@
+
+public class Search {
+
+    static void Search(){
+        String slovo = test.search.getText();
+        String text = test.textArea.getText();
+        int start = text.indexOf(slovo);
+        int end = slovo.length();
+        test.textArea.requestFocus();
+        test.textArea.select(start, (text.indexOf(slovo)+end));
+    }
+}
