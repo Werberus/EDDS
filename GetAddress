@@ -1,0 +1,56 @@
+
+import java.io.IOException;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.jsoup.Jsoup;
+import java.awt.event.ActionListener;
+
+
+ class GetAddress{
+
+
+    public static ActionListener GetAddress() {
+        return e -> {
+
+        try {
+            String str1 ="";
+            Document doc;
+            for (int k = 1; k <= 7; k++) {
+                doc = Jsoup.connect("http://edds74.ru/Upload/files/Svodka_" + k + ".htm").get();
+                Elements metaElements = doc.select("p");
+                String str = String.valueOf(metaElements);
+
+
+                int size = str.length();
+                String[] s = str.split("\n");
+                String s1 = new String();
+
+                try {
+                    for (int i = 0; i <= size; i++) {
+                        if (s[i] == s[6]) {
+                            s1 = s[7];
+                        }
+                    }
+                } catch (Exception ignored) {}
+
+
+                char[] ch = s1.toCharArray();
+                char[] ch2 = new char[ch.length];
+                for (int i = 0; i < ch.length; i++) {
+                    if (ch[i] != '<' && ch[i] != 'p' && ch[i] != '>' && ch[i] != 'b' && ch[i] != 'r' && ch[i] != '/')
+                        ch2[i] = ch[i];
+                    else ch2[i] = ' ';
+                    //System.out.print(ch2[i]);
+                }
+                 str1 = str1.concat(new String(ch2, 0, ch.length)).concat("\n");
+                System.out.println(str1);
+            }
+            test.textArea.setText(str1);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    };
+
+    }
+}
